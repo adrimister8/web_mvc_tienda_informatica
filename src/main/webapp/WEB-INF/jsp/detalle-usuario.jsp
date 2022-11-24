@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="org.iesvegademijas.model.Fabricante"%>
+<%@page import="org.iesvegademijas.model.Usuario"%>
 <%@page import="java.util.Optional"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Detalle Fabricante</title>
+<title>Detalle Usuducto</title>
 <style>
 .clearfix::after {
 	content: "";
@@ -24,14 +24,14 @@
 				style="float: none; margin: 0 auto; width: 900px;">
 				<div class="clearfix">
 					<div style="float: left; width: 50%">
-						<h1>Detalle Fabricante</h1>
+						<h1>Detalle Usuario</h1>
 					</div>
 					<div
 						style="float: none; width: auto; overflow: hidden; min-height: 80px; position: relative;">
 
 						<div style="position: absolute; left: 39%; top: 39%;">
 
-							<form action="/tienda_informatica/fabricantes">
+							<form action="/tienda_informatica/usuarios">
 								<input type="submit" value="Volver" />
 							</form>
 						</div>
@@ -44,8 +44,8 @@
 				</div>
 
 				<%
-				Optional<Fabricante> optFab = (Optional<Fabricante>) request.getAttribute("fabricante");
-				if (optFab.isPresent()) {
+				Optional<Usuario> optUsu = (Optional<Usuario>) request.getAttribute("usuario");
+				if (optUsu.isPresent()) {
 				%>
 
 				<div style="margin-top: 6px;" class="clearfix">
@@ -53,15 +53,31 @@
 						<label>Código</label>
 					</div>
 					<div style="float: none; width: auto; overflow: hidden;">
-						<input value="<%=optFab.get().getCodigo()%>" readonly="readonly" />
+						<input value="<%=optUsu.get().getCodigo()%>" readonly="readonly" />
 					</div>
 				</div>
 				<div style="margin-top: 6px;" class="clearfix">
 					<div style="float: left; width: 50%">
-						<label>Nombre</label>
+						<label>Usuario</label>
 					</div>
 					<div style="float: none; width: auto; overflow: hidden;">
-						<input value="<%=optFab.get().getNombre()%>" readonly="readonly" />
+						<input value="<%=optUsu.get().getUsuario()%>" readonly="readonly" />
+					</div>
+				</div>
+				<div style="margin-top: 6px;" class="clearfix">
+					<div style="float: left; width: 50%">
+						<label>Password</label>
+					</div>
+					<div style="float: none; width: auto; overflow: hidden;">
+						<input value="<%=optUsu.get().getPassword()%>" readonly="readonly" />
+					</div>
+				</div>
+				<div style="margin-top: 6px;" class="clearfix">
+					<div style="float: left; width: 50%">
+						<label>Rol</label>
+					</div>
+					<div style="float: none; width: auto; overflow: hidden;">
+						<input value="<%=optUsu.get().getRol()%>" readonly="readonly" />
 					</div>
 				</div>
 
@@ -69,7 +85,7 @@
 				} else {
 				%>
 
-				request.sendRedirect("fabricantes/");
+				request.sendRedirect("usuarios/");
 
 				<%
 				}

@@ -2,11 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@page import="org.iesvegademijas.model.Fabricante"%>
 <%@page import="java.util.Optional"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Detalle Fabricante</title>
+<title>Detalle Usuario</title>
 <style>
 .clearfix::after {
 	content: "";
@@ -22,17 +23,16 @@
 		<section>
 			<div id="contenedora"
 				style="float: none; margin: 0 auto; width: 900px;">
-				<form action="/tienda_informatica/fabricantes/editar/" method="post">
-					<input type="hidden" name="__method__" value="put" />
+				<form action="/tienda_informatica/usuarios/crear/" method="post">
 					<div class="clearfix">
 						<div style="float: left; width: 50%">
-							<h1>Editar Fabricante</h1>
+							<h1>Crear Usuario</h1>
 						</div>
 						<div
 							style="float: none; width: auto; overflow: hidden; min-height: 80px; position: relative;">
 
 							<div style="position: absolute; left: 39%; top: 39%;">
-								<input type="submit" value="Guardar" />
+								<input type="submit" value="Crear" />
 							</div>
 
 						</div>
@@ -42,38 +42,26 @@
 						<hr />
 					</div>
 
-					<%
-					Optional<Fabricante> optFab = (Optional<Fabricante>) request.getAttribute("fabricante");
-					if (optFab.isPresent()) {
-					%>
-
 					<div style="margin-top: 6px;" class="clearfix">
-						<div style="float: left; width: 50%">
-							<label>Código</label>
-						</div>
+						<div style="float: left; width: 50%">Usuario</div>
 						<div style="float: none; width: auto; overflow: hidden;">
-							<input name="codigo" value="<%=optFab.get().getCodigo()%>"
-								readonly="readonly" />
-						</div>
-					</div>
-					<div style="margin-top: 6px;" class="clearfix">
-						<div style="float: left; width: 50%">
-							<label>Nombre</label>
-						</div>
-						<div style="float: none; width: auto; overflow: hidden;">
-							<input name="nombre" value="<%=optFab.get().getNombre()%>" />
+							<input name="usuario" />
 						</div>
 					</div>
 
-					<%
-					} else {
-					%>
+					<div style="margin-top: 6px;" class="clearfix">
+						<div style="float: left; width: 50%">Password</div>
+						<div style="float: none; width: auto; overflow: hidden;">
+							<input name="password" />
+						</div>
+					</div>
 
-					request.sendRedirect("fabricantes/");
-
-					<%
-					}
-					%>
+					<div style="margin-top: 6px;" class="clearfix">
+						<div style="float: left; width: 50%">Rol</div>
+						<div style="float: none; width: auto; overflow: hidden;">
+							<input name="rol">
+						</div>
+					</div>
 				</form>
 			</div>
 		</section>

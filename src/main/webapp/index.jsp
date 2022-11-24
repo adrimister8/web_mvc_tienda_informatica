@@ -1,12 +1,16 @@
 <html>
 <head>
-<title>Redirigiendo...</title>
-</head>
-<body>
-Redirigiendo. Por favor, espere...
-
-<%
-   response.sendRedirect("/tienda_informatica/fabricantes");
-%>
-</body>
+	<title></title>
+	
+	</head>
+	<body>
+		<%@ include file="/WEB-INF/jsp/header.jspf"%>
+		<%@ include file="/WEB-INF/jsp/nav.jspf"%>
+		<main>
+			<section>
+				Bienvenido a la api de fabricantes/productos.
+			</section>
+		</main>
+		<%@ include file="/WEB-INF/jsp/footer.jspf"%>
+	</body>
 </html>

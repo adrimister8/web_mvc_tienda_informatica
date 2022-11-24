@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			.head1 {
+				font-size:40px;
+				color:#009900;
+				font-weight:bold;
+			}
+			.head2 {
+				font-size:17px;
+				margin-left:10px;
+				margin-bottom:15px;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<div class="head1">Tienda Informatica</div>
+			<div class="head2">Sitio de mantenimiento de tienda de informatica</div>
+		</header>
+	</body>
+</html>

@@ -9,17 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.iesvegademijas.model.Fabricante;
-import org.iesvegademijas.model.FabricanteDTO;
 
-public class FabricanteDAOImpl extends AbstractDAOImpl implements FabricanteDAO{
+import org.iesvegademijas.model.Producto;
 
-	/**
-	 * Inserta en base de datos el nuevo fabricante, actualizando el id en el bean fabricante.
-	 */
-	@Override	
-	public synchronized void create(Fabricante fabricante) {
-		
+public class ProductoDAOImpl extends AbstractDAOImpl implements ProductoDAO {
+
+	@Override
+	public synchronized void create(Producto producto) {
 		Connection conn = null;
 		PreparedStatement ps = null;
         ResultSet rs = null;
@@ -33,18 +29,20 @@ public class FabricanteDAOImpl extends AbstractDAOImpl implements FabricanteDAO{
         	//ps = conn.prepareStatement("INSERT INTO fabricante (nombre) VALUES (?)", new String[] {"codigo"});        	
         	//Ver también, AbstractDAOImpl.executeInsert ...
         	//Columna fabricante.codigo es clave primaria auto_increment, por ese motivo se omite de la sentencia SQL INSERT siguiente. 
-        	ps = conn.prepareStatement("INSERT INTO fabricante (nombre) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
+        	ps = conn.prepareStatement("INSERT INTO producto (nombre, precio, codigo_fabricante) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS);
             
             int idx = 1;
-            ps.setString(idx++, fabricante.getNombre());
+            ps.setString(idx++, producto.getNombre());
+            ps.setDouble(idx++, producto.getPrecio());
+            ps.setInt(idx++, producto.getCodigoFabricante());
                    
             int rows = ps.executeUpdate();
             if (rows == 0) 
-            	System.out.println("INSERT de fabricante con 0 filas insertadas.");
+            	System.out.println("INSERT de producto con 0 filas insertadas.");
             
             rsGenKeys = ps.getGeneratedKeys();
             if (rsGenKeys.next()) 
-            	fabricante.setCodigo(rsGenKeys.getInt(1));
+            	producto.setCodigo(rsGenKeys.getInt(1));
                       
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -53,20 +51,16 @@ public class FabricanteDAOImpl extends AbstractDAOImpl implements FabricanteDAO{
 		} finally {
             closeDb(conn, ps, rs);
         }
-        
+		
 	}
 
-	/**
-	 * Devuelve lista con todos loa fabricantes.
-	 */
 	@Override
-	public List<Fabricante> getAll() {
-		
+	public List<Producto> getAll() {
 		Connection conn = null;
 		Statement s = null;
         ResultSet rs = null;
         
-        List<Fabricante> listFab = new ArrayList<>(); 
+        List<Producto> listPro = new ArrayList<>(); 
         
         try {
         	conn = connectDB();
@@ -74,13 +68,15 @@ public class FabricanteDAOImpl extends AbstractDAOImpl implements FabricanteDAO{
         	// Se utiliza un objeto Statement dado que no hay parámetros en la consulta.
         	s = conn.createStatement();
             		
-        	rs = s.executeQuery("SELECT * FROM fabricante");          
+        	rs = s.executeQuery("SELECT * FROM producto");          
             while (rs.next()) {
-            	Fabricante fab = new Fabricante();
+            	Producto pro = new Producto();
             	int idx = 1;
-            	fab.setCodigo(rs.getInt(idx++));
-            	fab.setNombre(rs.getString(idx));
-            	listFab.add(fab);
+            	pro.setCodigo(rs.getInt(idx++));
+            	pro.setNombre(rs.getString(idx++));
+            	pro.setPrecio(rs.getDouble(idx++));
+            	pro.setCodigoFabricante(rs.getInt(idx));
+            	listPro.add(pro);
             }
           
 		} catch (SQLException e) {
@@ -90,16 +86,11 @@ public class FabricanteDAOImpl extends AbstractDAOImpl implements FabricanteDAO{
 		} finally {
             closeDb(conn, s, rs);
         }
-        return listFab;
-        
+        return listPro;
 	}
 
-	/**
-	 * Devuelve Optional de fabricante con el ID dado.
-	 */
 	@Override
-	public Optional<Fabricante> find(int id) {
-		
+	public Optional<Producto> find(int id) {
 		Connection conn = null;
 		PreparedStatement ps = null;
         ResultSet rs = null;
@@ -107,20 +98,21 @@ public class FabricanteDAOImpl extends AbstractDAOImpl implements FabricanteDAO{
         try {
         	conn = connectDB();
         	
-        	ps = conn.prepareStatement("SELECT * FROM fabricante WHERE codigo = ?");
+        	ps = conn.prepareStatement("SELECT * FROM producto WHERE codigo = ?");
         	
         	int idx =  1;
         	ps.setInt(idx, id);
         	
         	rs = ps.executeQuery();
-        	
         	if (rs.next()) {
-        		Fabricante fab = new Fabricante();
+        		Producto pro = new Producto();
         		idx = 1;
-        		fab.setCodigo(rs.getInt(idx++));
-        		fab.setNombre(rs.getString(idx));
+        		pro.setCodigo(rs.getInt(idx++));
+        		pro.setNombre(rs.getString(idx++));
+        		pro.setPrecio(rs.getDouble(idx++));
+        		pro.setCodigoFabricante(rs.getInt(idx));
         		
-        		return Optional.of(fab);
+        		return Optional.of(pro);
         	}
         	
         } catch (SQLException e) {
@@ -132,14 +124,10 @@ public class FabricanteDAOImpl extends AbstractDAOImpl implements FabricanteDAO{
         }
         
         return Optional.empty();
-        
 	}
-	/**
-	 * Actualiza fabricante con campos del bean fabricante según ID del mismo.
-	 */
+
 	@Override
-	public void update(Fabricante fabricante) {
-		
+	public void update(Producto producto) {
 		Connection conn = null;
 		PreparedStatement ps = null;
         ResultSet rs = null;
@@ -147,15 +135,17 @@ public class FabricanteDAOImpl extends AbstractDAOImpl implements FabricanteDAO{
         try {
         	conn = connectDB();
         	
-        	ps = conn.prepareStatement("UPDATE fabricante SET nombre = ?  WHERE codigo = ?");
+        	ps = conn.prepareStatement("UPDATE producto SET nombre = ?, precio = ?, codigo_fabricante = ?  WHERE codigo = ?");
         	int idx = 1;
-        	ps.setString(idx++, fabricante.getNombre());
-        	ps.setInt(idx, fabricante.getCodigo());
+        	ps.setString(idx++, producto.getNombre());
+        	ps.setDouble(idx++, producto.getPrecio());
+        	ps.setInt(idx++, producto.getCodigoFabricante());
+        	ps.setInt(idx, producto.getCodigo());
         	
         	int rows = ps.executeUpdate();
         	
         	if (rows == 0) 
-        		System.out.println("Update de fabricante con 0 registros actualizados.");
+        		System.out.println("Update de producto con 0 registros actualizados.");
         	
         } catch (SQLException e) {
 			e.printStackTrace();
@@ -164,17 +154,11 @@ public class FabricanteDAOImpl extends AbstractDAOImpl implements FabricanteDAO{
 		} finally {
             closeDb(conn, ps, rs);
         }
-        
-        
-        
+		
 	}
 
-	/**
-	 * Borra fabricante con ID proporcionado.
-	 */
 	@Override
 	public void delete(int id) {
-		
 		Connection conn = null;
 		PreparedStatement ps = null;
         ResultSet rs = null;
@@ -182,15 +166,14 @@ public class FabricanteDAOImpl extends AbstractDAOImpl implements FabricanteDAO{
         try {
         	conn = connectDB();
         	
-        	ps = conn.prepareStatement("DELETE FROM fabricante WHERE codigo = ?");
+        	ps = conn.prepareStatement("DELETE FROM producto WHERE codigo = ?");
         	int idx = 1;        	
         	ps.setInt(idx, id);
         	
         	int rows = ps.executeUpdate();
-        	rs = ps.executeQuery();
         	
         	if (rows == 0) 
-        		System.out.println("Delete de fabricante con 0 registros eliminados.");
+        		System.out.println("Delete de producto con 0 registros eliminados.");
         	
         } catch (SQLException e) {
 			e.printStackTrace();
@@ -201,40 +184,52 @@ public class FabricanteDAOImpl extends AbstractDAOImpl implements FabricanteDAO{
         }
 		
 	}
-	
-	// Ampliacion CRUD
-	
-	public Optional<Integer> getCountProductos(int id){
-			
+
+	@Override
+	public List<Producto> getAllCoincidences(String parametro) {
 		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
-		try {
-			conn = connectDB();
-			ps = conn.prepareStatement("SELECT count(*) FROM producto where codigo_fabricante = ?");
-			int idx =  1;
-        	ps.setInt(idx, id);
-        	
+		Statement s = null;
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        
+        List<Producto> listPro = new ArrayList<>(); 
+        
+        try {
+        	conn = connectDB();
+
+        	// Se utiliza un objeto Statement dado que no hay parámetros en la consulta.
+        	s = conn.createStatement();
+            		
+        	//ps = conn.prepareStatement("SELECT * FROM producto where nombre like ?");          
+            if(parametro.equals("")) {
+            	ps = conn.prepareStatement("SELECT * FROM producto;");
+            	
+            	
+            }else {
+            	ps = conn.prepareStatement("SELECT * FROM producto WHERE MATCH(nombre) AGAINST (? IN BOOLEAN MODE);");
+            	ps.setString(1, parametro + "*");
+            }
         	rs = ps.executeQuery();
         	
-    		
-        	if (rs.next()) {
-        		Integer productos = rs.getInt(idx);
-        		return Optional.of(productos);
-        	}
-        	
-			
+        	while (rs.next()) {
+            	Producto pro = new Producto();
+            	int idx = 1;
+            	pro.setCodigo(rs.getInt(idx++));
+            	pro.setNombre(rs.getString(idx++));
+            	pro.setPrecio(rs.getDouble(idx++));
+            	pro.setCodigoFabricante(rs.getInt(idx));
+            	listPro.add(pro);
+            }
+          
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
-            closeDb(conn, ps, rs);
+            closeDb(conn, s, rs);
         }
-		
-		
-		return Optional.empty();
+        return listPro;
+	
 	}
 	
 }

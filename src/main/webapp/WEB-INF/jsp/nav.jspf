@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			.menu {
+				position: sticky;
+				top: 0;
+				background-color: #009900;
+				padding:10px 0px 10px 0px;
+				color:white;
+				margin: 0 auto;
+				overflow: hidden;
+			}
+			.menu a {
+				float: left;
+				color: white;
+				text-align: center;
+				padding: 14px 16px;
+				text-decoration: none;
+				font-size: 20px;
+			}
+			.menu-log {
+				right: auto;
+				float: right;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="menu">
+			<a href="index.jsp">HOME</a>
+			<a href="/tienda_informatica/fabricantes">Frabricantes</a>
+			<a href="/tienda_informatica/productos">Producto</a>
+			<div class="menu-log">
+				<a href="#login">LOGIN</a>
+			</div>
+		</nav>
+	</body>
+</html>
