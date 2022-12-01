@@ -61,15 +61,7 @@
 							<label>Usuario</label>
 						</div>
 						<div style="float: none; width: auto; overflow: hidden;">
-							<input name="nombre" value="<%=optUsu.get().getUsuario()%>" />
-						</div>
-					</div>
-					<div style="margin-top: 6px;" class="clearfix">
-						<div style="float: left; width: 50%">
-							<label>Password</label>
-						</div>
-						<div style="float: none; width: auto; overflow: hidden;">
-							<input name="password" value="" />
+							<input name="usuario" value="<%=optUsu.get().getUsuario()%>" />
 						</div>
 					</div>
 					<div style="margin-top: 6px;" class="clearfix">
@@ -77,8 +69,10 @@
 							<label>Rol</label>
 						</div>
 						<div style="float: none; width: auto; overflow: hidden;">
-							<input name="codigo_fabricante"
-								value="<%=optUsu.get().getRol()%>" />
+							<select name="rol">
+								<option value="cliente" selected>Cliente</option>
+								<option value="vendedor">Vendedor</option>
+								<option value="administrador">Administrador</option>
 						</div>
 					</div>
 

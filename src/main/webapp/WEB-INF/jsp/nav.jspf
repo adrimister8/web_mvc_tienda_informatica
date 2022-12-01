@@ -30,8 +30,9 @@
 			<a href="index.jsp">HOME</a>
 			<a href="/tienda_informatica/fabricantes">Frabricantes</a>
 			<a href="/tienda_informatica/productos">Producto</a>
+			<a href="/tienda_informatica/usuarios">Usuario</a>
 			<div class="menu-log">
-				<a href="#login">LOGIN</a>
+				<a href="/tienda_informatica/login">LOGIN</a>
 			</div>
 		</nav>
 	</body>

@@ -1,5 +1,6 @@
 package org.iesvegademijas.dao;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,7 +33,8 @@ public class UsuarioDAOImpl extends AbstractDAOImpl implements UsuarioDAO {
             
             int idx = 1;
             ps.setString(idx++, usuario.getUsuario());
-            ps.setString(idx++, usuario.getPassword());
+            
+            ps.setString(idx++, Usuario.hashPassword(usuario.getPassword()));
             ps.setString(idx++, usuario.getRol());
                    
             int rows = ps.executeUpdate();
@@ -46,6 +48,8 @@ public class UsuarioDAOImpl extends AbstractDAOImpl implements UsuarioDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} finally {
             closeDb(conn, ps, rs);
@@ -134,10 +138,9 @@ public class UsuarioDAOImpl extends AbstractDAOImpl implements UsuarioDAO {
         try {
         	conn = connectDB();
         	
-        	ps = conn.prepareStatement("UPDATE usuario SET usuario = ?, password = ?, rol = ?  WHERE codigo = ?");
+        	ps = conn.prepareStatement("UPDATE usuario SET usuario = ?, rol = ?  WHERE codigo = ?");
         	int idx = 1;
         	ps.setString(idx++, usuario.getUsuario());
-        	ps.setString(idx++, usuario.getPassword());
         	ps.setString(idx++, usuario.getRol());
         	ps.setInt(idx, usuario.getCodigo());
         	
@@ -183,5 +186,44 @@ public class UsuarioDAOImpl extends AbstractDAOImpl implements UsuarioDAO {
         }
 		
 	}
+
+	@Override
+	public Optional<Usuario> getUsuario(String usuario) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+        ResultSet rs = null;
+		
+        try {
+        	conn = connectDB();
+        	Usuario usu = new Usuario();
+        	
+        	ps = conn.prepareStatement("SELECT * FROM usuario WHERE usuario = ?");
+        	int idx = 1;        	
+        	ps.setString(idx, usuario);
+        	
+        	rs = ps.executeQuery();
+        	if (rs.next()) {
+        		
+        		idx = 1;
+        		usu.setCodigo(rs.getInt(idx++));
+        		usu.setUsuario(rs.getString(idx++));
+        		usu.setPassword(rs.getString(idx++));
+        		usu.setRol(rs.getString(idx));
+        	}
+        	
+        	return Optional.of(usu);
+        	
+        } catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+            closeDb(conn, ps, rs);
+        }
+		
+        return Optional.empty();
+        
+	}
 	
+
 }

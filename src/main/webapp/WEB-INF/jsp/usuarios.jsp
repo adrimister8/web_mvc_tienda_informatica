@@ -44,10 +44,9 @@
 					<hr />
 				</div>
 				<div class="clearfix">
-					<div style="float: left; width: 20%">Código</div>
-					<div style="float: left; width: 16%">Usuario</div>
-					<div style="float: left; width: 25%">Password</div>
-					<div style="float: left; width: 20%">Rol</div>
+					<div style="float: left; width: 25%">Código</div>
+					<div style="float: left; width: 28%">Usuario</div>
+					<div style="float: left; width: 25%">Rol</div>
 					<div style="float: none; width: auto; overflow: hidden;">Acción</div>
 				</div>
 				<div class="clearfix">
@@ -61,10 +60,9 @@
 				%>
 
 				<div style="margin-top: 6px;" class="clearfix">
-					<div style="float: left; width: 20%"><%=usuario.getCodigo()%></div>
-					<div style="float: left; width: 20%"><%=usuario.getUsuario()%></div>
-					<div style="float: left; width: 20%"><%=usuario.getPassword()%></div>
-					<div style="float: left; width: 20%"><%=usuario.getRol()%></div>
+					<div style="float: left; width: 25%"><%=usuario.getCodigo()%></div>
+					<div style="float: left; width: 25%"><%=usuario.getUsuario()%></div>
+					<div style="float: left; width: 25%"><%=usuario.getRol()%></div>
 					<div style="float: none; width: auto; overflow: hidden;">
 						<form
 							action="/tienda_informatica/usuarios/<%=usuario.getCodigo()%>"

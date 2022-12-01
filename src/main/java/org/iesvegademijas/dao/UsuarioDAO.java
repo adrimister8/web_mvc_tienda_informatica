@@ -1,5 +1,6 @@
 package org.iesvegademijas.dao;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,5 +13,6 @@ public interface UsuarioDAO {
 	public Optional<Usuario>  find(int id);
 	public void update(Usuario usuario);
 	public void delete(int id);
+	public Optional<Usuario> getUsuario(String usuario);
 	
 }

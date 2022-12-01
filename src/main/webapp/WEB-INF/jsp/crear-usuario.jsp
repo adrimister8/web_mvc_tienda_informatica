@@ -59,7 +59,11 @@
 					<div style="margin-top: 6px;" class="clearfix">
 						<div style="float: left; width: 50%">Rol</div>
 						<div style="float: none; width: auto; overflow: hidden;">
-							<input name="rol">
+							<select name="rol">
+								<option value="cliente" selected>Cliente</option>
+								<option value="vendedor">Vendedor</option>
+								<option value="administrador">Administrador</option>
+							</select>
 						</div>
 					</div>
 				</form>

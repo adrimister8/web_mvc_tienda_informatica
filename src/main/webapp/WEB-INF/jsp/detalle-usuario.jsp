@@ -66,14 +66,6 @@
 				</div>
 				<div style="margin-top: 6px;" class="clearfix">
 					<div style="float: left; width: 50%">
-						<label>Password</label>
-					</div>
-					<div style="float: none; width: auto; overflow: hidden;">
-						<input value="<%=optUsu.get().getPassword()%>" readonly="readonly" />
-					</div>
-				</div>
-				<div style="margin-top: 6px;" class="clearfix">
-					<div style="float: left; width: 50%">
 						<label>Rol</label>
 					</div>
 					<div style="float: none; width: auto; overflow: hidden;">
